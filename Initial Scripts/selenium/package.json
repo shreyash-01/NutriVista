@@ -1,0 +1,18 @@
+{
+  "dependencies": {
+    "chromedriver": "^120.0.2",
+    "mongoose": "^8.2.0",
+    "selenium-webdriver": "^4.16.0",
+    "tesseract.js": "^5.0.4"
+  },
+  "name": "selenium-demo",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "keywords": [],
+  "description": ""
+}
