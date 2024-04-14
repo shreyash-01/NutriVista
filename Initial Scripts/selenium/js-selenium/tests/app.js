@@ -22,20 +22,11 @@ const Image = mongoose.model('Scraped_Product_Images', imageSchema);
 async function example(){
     let chromeOptions = new chrome.Options();
     chromeOptions.headless(); // Enable headless mode
-       // Add argument to disable the AutomationControlled flag
-       chromeOptions.addArguments("--disable-blink-features=AutomationControlled");
-
-       // Exclude the collection of enable-automation switches
-       chromeOptions.excludeSwitches("enable-automation");
-   
-       // Turn-off useAutomationExtension
-       chromeOptions.excludeSwitches("useAutomationExtension");
 
     let driver = new Builder()
     .forBrowser('chrome')
     .setChromeOptions(chromeOptions)
     .build();
-    await driver.executeScript("Object.defineProperty(navigator, 'webdriver', {get: () => undefined})");
 
 
     await driver.get("https://www.amazon.in/")
@@ -53,32 +44,32 @@ async function example(){
       // "Protein bar",
       // "Biscuits",
       // "Cookies",
-      // "Chips",
-      // "Brownie",
-      // "Namkeen",
-      // "Granola",
-      // "Granola Bars",
-      // "Cake",
-      // "Chocolates",
-      // "Kaju Dry Fruits",
-      // "Almond Dry Fruits",
-      // "Chocos Cereals",
-      // "Cornflakes Cereals",
-      // "Snack bar",
-      // "Wheat Grains",
-      // "Rice Grains",
-      // "Millet Grains",
-      // "Moong Dal",
-      // "Masoor Dal",
-      // "Choco chips",
-      // "Pie",
-      // "Olive Oil",
-      // "Refined Oil",
-      // "Mustard Oil",
-      // "Yogurt",
-      // "Quinoa",
-      // "Chia Raw Seeds",
-      // "Pumpkin Raw Seeds",
+      "Chips",
+      "Brownie",
+      "Namkeen",
+      "Granola",
+      "Granola Bars",
+      "Cake",
+      "Chocolates",
+      "Kaju Dry Fruits",
+      "Almond Dry Fruits",
+      "Chocos Cereals",
+      "Cornflakes Cereals",
+      "Snack bar",
+      "Wheat Grains",
+      "Rice Grains",
+      "Millet Grains",
+      "Moong Dal",
+      "Masoor Dal",
+      "Choco chips",
+      "Pie",
+      "Olive Oil",
+      "Refined Oil",
+      "Mustard Oil",
+      "Yogurt",
+      "Quinoa",
+      "Chia Raw Seeds",
+      "Pumpkin Raw Seeds",
       "Honey",
       "Syrup",
       "Jam",
@@ -147,7 +138,7 @@ async function example(){
 
           try {
             const resultLinks = await driver.findElements(By.css('h2 a')); // Assuming result links are inside h2 elements
-            const numResultsToOpen = Math.min(resultLinks.length, 5);
+            const numResultsToOpen = Math.min(resultLinks.length, 10);
         
             for (let i = 0; i < numResultsToOpen; i++) {
                 const link = resultLinks[i];
@@ -213,17 +204,20 @@ async function example(){
                 var number;
                 for(number=0;number<=10;number++){
                   try{
+
                     var string="ivImage_"+number;
                     const thumbImageElement = await driver.findElement(By.id(string));
                     randomDelay();
 
                     await driver.actions().click(thumbImageElement).perform();
-                    randomDelay();
+                    await delay(2000);
+
+
 
 
                     const specificImageElement = await driver.wait(
                       until.elementLocated(By.css('#ivLargeImage img')),
-                      2500 // Adjust the timeout as needed
+                      10000 // Adjust the timeout as needed
                     );
 
                     randomDelay();
@@ -240,7 +234,7 @@ async function example(){
 
                 }
                 const returnObject={'productTitle':productTitle, 'imageUrls':specificImageList};
-
+                console.log(returnObject);
                 return returnObject;
 
 
@@ -275,6 +269,9 @@ async function example(){
               console.log("Action after random delay");
           }, delay);
     }
+    function delay(ms) {
+      return new Promise(resolve => setTimeout(resolve, ms));
+  }
 
    
 }
