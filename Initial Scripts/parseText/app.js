@@ -33,10 +33,10 @@ const safetySettings = [
     threshold:HarmBlockThreshold.BLOCK_NONE,
   },
 ];
-const genAI = new GoogleGenerativeAI(process.env.API_KEY);
+const genAI = new GoogleGenerativeAI('AIzaSyAEeSwB5xbBSPzqWjJocns0yC8XUci-HXE');
 const generationConfig={temperature: 0.4, topP: 1, topK: 32, maxOutputTokens: 4096};
 
-  mongoose.connect(process.env.MONGODB_URL, {
+  mongoose.connect('mongodb+srv://utkarsh:utkarsh@atlascluster.vdrhcf6.mongodb.net/NutriVista', {
     useNewUrlParser: true,
     useUnifiedTopology: true
   })
@@ -55,9 +55,9 @@ const generationConfig={temperature: 0.4, topP: 1, topK: 32, maxOutputTokens: 40
     category:String,
     
 
-  },{ collection: 'intermediate_data' });
+  },{ collection: 'final_data' });
 
-  const intermediate_model = mongoose.model('intermediate_data', intermediate_schema);
+  const intermediate_model = mongoose.model('final_data', intermediate_schema);
 
   const raw_text_schema=new mongoose.Schema({
     productName:String,
@@ -88,47 +88,13 @@ async function run() {
   const tableData = await raw_text.find();
 
   
-  const prompt2="Detect the ingredients of the product in the given input and creturn a single in this format: [<Ingredient1>,<Ingredient2>,...]. Assume certain data and if ingredients not present just return '-'. Keep one ingredient value only once in the output and make sure to mention all the ingredients present."
-  const prompt1="Detect the nutrition table in the given input and convert it in this format:[{Nutrient:<NutrientName>, per/x:' ', per/y:' ', %RDA:' '}, {Nutrient:<NutrientName>, per/x:' ', per/y:' ', %RDA:' '}, ...]. The variables x and y will be given in the raw text for example 30g, 32g, serve etc. Some might contain only one value(only x), some might contain both and return the final values in the format given. Assume certain data and if certain values not present just return it with '-'. Mention one nutrient only once  "
+  const prompt2="Detect the ingredients of the product in the given input and creturn a single in this format: ['<Ingredient1>','<Ingredient2>',...]. Assume certain data and if ingredients not present just return '-'. Keep one ingredient value only once in the output and make sure to mention all the ingredients present."
+  const prompt1="Detect the nutrition table in the given input and convert it in this format:[{'Nutrien't:'<NutrientName>', 'per/x':' ', 'per/y':' ', '%RDA':' '}, {'Nutrient':'<NutrientName>', 'per/x':' ', 'per/y':' ', '%RDA':' '}, ...]. The variables x and y will be given in the raw text for example 30g, 32g, serve etc. Some might contain only one value(only x), some might contain both and return the final values in the format given. Assume certain data. Mention one nutrient only once. The data will be uneven, some will have nutritional data in a format and some will have in the form of raw text clumped together. Go through both these texts and prioritise the values of the structured data and if there is certain data not available and check with the raw text following the string. If at the end certain data is not present just fill it with '-'. Return only a single array of the objects and each key and value should be under '' as string. "
   
   
   
   const model=genAI.getGenerativeModel({model:"gemini-pro", safetySettings});
-  const chat = model.startChat({
-    history: [
-      {
-        role: "user",
-        parts: [{ text: "Hello, I have 2 dogs in my house." }],
-      },
-      {
-        role: "model",
-        parts: [{ text: "Great to meet you. What would you like to know?" }],
-        
-      },
-      
-    ],
-    generationConfig: {
-      maxOutputTokens: 10000000,
-    },
-  });
-
-  const chat2 = model.startChat({
-    history: [
-      {
-        role: "user",
-        parts: [{ text: "Hello, I have 2 dogs in my house." }],
-      },
-      {
-        role: "model",
-        parts: [{ text: "Great to meet you. What would you like to know?" }],
-        
-      }
-      
-    ],
-    generationConfig: {
-      maxOutputTokens: 10000000,
-    },
-  });
+  
 
   for(const data of tableData){
     const existingDoc = await intermediate_model.findOne({ productName: data.productName });
@@ -156,7 +122,7 @@ async function run() {
         const result1 = await model.generateContent(prompt1+nutrition);
         const response1 = await result1.response;
         const nutritionResult = response1.text();
-        // console.log("Nutritional data of "+productName+": \n"+nutritionResult);
+        console.log("Nutritional data of "+productName+": \n"+nutritionResult);
 
 
         const result2 = await model.generateContent(prompt2+ingredients);
@@ -169,15 +135,15 @@ async function run() {
 
 
     
-        const doc=new intermediate_model({productName:productName,imageUrls:imageUrls, nutritionalData:nutritionResult, ingredientsList:ingredientsResult, category:category})
-        console.log(doc);
-        doc.save()
-        .then(savedRawText => {
-          console.log("Raw text saved successfully:", savedRawText);
-        })
-        .catch(error => {
-          console.error("Error saving raw text:", error);
-        });
+        // const doc=new intermediate_model({productName:productName,imageUrls:imageUrls, nutritionalData:nutritionResult, ingredientsList:ingredientsResult, category:category})
+        // console.log(doc);
+        // doc.save()
+        // .then(savedRawText => {
+        //   console.log("Raw text saved successfully:", savedRawText);
+        // })
+        // .catch(error => {
+        //   console.error("Error saving raw text:", error);
+        // });
     }
 
   }
