@@ -10,7 +10,7 @@ import java.util.List;
 @ToString
 @Getter
 @Setter
-@Document(collection = "Ingredients")
+@Document(collection = "intermediate_data")
 public class Product {
     private String productName;
     private List<String> ingredients;

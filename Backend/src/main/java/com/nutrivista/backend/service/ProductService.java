@@ -1,6 +1,8 @@
 package com.nutrivista.backend.service;
 
+import com.nutrivista.backend.model.Category;
 import com.nutrivista.backend.model.Product;
+import com.nutrivista.backend.repository.CategoriesRepository;
 import com.nutrivista.backend.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -12,11 +14,16 @@ import java.util.List;
 public class ProductService {
 
     private ProductRepository productRepository;
+    private CategoriesRepository categoriesRepository;
+
 
     @Autowired
-    public ProductService(ProductRepository productRepository) {
+    public ProductService(ProductRepository productRepository, CategoriesRepository categoriesRepository) {
         this.productRepository = productRepository;
+        this.categoriesRepository = categoriesRepository;
     }
+
+
 
     public List<Product> getCategories(String category) {
         List<Product> products = productRepository.findAll();
@@ -28,6 +35,12 @@ public class ProductService {
         }
         return products;
     }
+
+
+    public List<Category> getAllCategories(String prefix){
+        return categoriesRepository.findByNameStartingWith(prefix);
+    }
+
 
     public Product addProduct(Product product) {
         // slow for larger data
@@ -43,7 +56,7 @@ public class ProductService {
     }
 
 
-    public List<Product> getProducts() {
-        return productRepository.findAll();
+    public List<String> getProducts() {
+        return productRepository.findByNameStartingWith("B");
     }
 }
