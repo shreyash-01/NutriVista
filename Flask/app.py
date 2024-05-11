@@ -9,6 +9,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
+from llm_nutri import call_llm
 
 import google.generativeai as genai
 from IPython.display import Markdown
@@ -26,6 +27,13 @@ db = client.NutriVista
 source_images = db.source_images
 
 app = Flask(__name__)
+
+
+@app.route("/api/llm", methods=["POST"])
+def home():
+    data = request.json.get("nutrition")
+    return call_llm(data)
+
 
 
 @app.route('/run_selenium_script', methods=['POST'])
