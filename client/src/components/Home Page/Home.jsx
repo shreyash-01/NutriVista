@@ -3,7 +3,7 @@ import axios from "axios";
 import Nav from "../Nav/Nav"
 import { motion } from "framer-motion";
 import animationData from "../../assets/animation.json"
-import Lottie from "react-lottie";
+import { Link } from "react-router-dom";
 
 
 import SearchIcon from "./SearchIcon"
@@ -23,7 +23,7 @@ export default function Home(){
             const json=response.data;
             if (response.status === 200) {
                 // console.log(json.searchResults);
-                setSearchResponse(json.searchResults);
+                setSearchResponse(json);
                 console.log(json)
             }
             else{
@@ -127,9 +127,20 @@ export default function Home(){
                                 <SearchIcon />
                             </div>
                         </div>
-                        {/* <div className="h-[20vw] w-[50vw] bg-gradient-to-t from-[#eae9e9] to-custom2 rounded-lg shadow-lg">
-
-                        </div> */}
+                        
+                        
+                        {searchResponse && 
+                            <div className={`absolute top-80 mt-5 text-black w-[27rem] flex flex-col rounded-sm bg-white z-50`}>
+                                {searchResponse.map((response,index)=>(
+                                    <Link to={`/category/${response.category}`} key={index}>
+                                    <div className="flex justify-between border-b-2 border-gray-400 cursor-pointer hover:bg-slate-500 p-2">
+                                        {response.category}
+                                    
+                                    </div>
+                                    </Link>
+                                ))}
+                            </div>
+                        }
                     </motion.div>
                 </div>
 
