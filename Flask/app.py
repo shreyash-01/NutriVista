@@ -31,7 +31,7 @@ app = Flask(__name__)
 
 @app.route("/api/llm", methods=["POST"])
 def home():
-    data = request.json.get("nutrition")
+    data = request.json.get("data")
     return call_llm(data)
 
 
