@@ -14,7 +14,7 @@ import os
 load_dotenv()
 
 
-def call_llm(nutrition_values: str)-> str:
+def call_llm(nutritional_values: str)-> str:
   API = os.getenv('API_KEY')
   genai.configure(api_key=API)
 
@@ -50,7 +50,7 @@ def call_llm(nutrition_values: str)-> str:
 
   convo = model.start_chat(history=[
   ])
-  message = """below is the nutritioinal data of a food act like a nutritionist tell the good details and the bad and finally give suggestion(write the suggestion in a paragraph like a doctor would and do not write anythng like consult a registered dietitian or professional) lastly score the produt out of 10 in your opinion""" + nutritional_values
+  message = """below is the nutritional data of a food act like a nutritionist tell the good details and the bad and finally give suggestion(write the suggestion in a paragraph like a doctor would and do not write anything like consult a registered dietitian or professional). Give me a detailed explanation for this. lastly score the product out of 10 in your opinion""" + nutritional_values
   convo.send_message(message)
   return convo.last.text
 

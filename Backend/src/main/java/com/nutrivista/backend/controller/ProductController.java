@@ -41,6 +41,11 @@ public class ProductController {
 
     }
 
+    @GetMapping
+    public String getProduct(@RequestParam String productID){
+        return productService.getLLMOutput(productID);
+    }
+
 
     @GetMapping("/categories")
     public List<Category> getAllCategories(@RequestParam String prefix){
