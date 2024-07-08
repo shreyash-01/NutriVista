@@ -3,6 +3,7 @@ package com.nutrivista.backend.model;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.List;
@@ -12,6 +13,8 @@ import java.util.List;
 @Setter
 @Document(collection = "intermediate_data")
 public class Product {
+    @Id
+    private String id;
     private String productName;
     private List<String> ingredients;
     private List<String> nutritionalData;
