@@ -6,8 +6,11 @@ import com.nutrivista.backend.model.Product;
 import com.nutrivista.backend.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.http.ResponseEntity;
+
 
 import java.util.List;
+import java.util.Optional;
 
 @CrossOrigin(origins = "http://localhost:3000")
 @RestController
@@ -50,6 +53,17 @@ public class ProductController {
     @GetMapping("/categories")
     public List<Category> getAllCategories(@RequestParam String prefix){
         return productService.getAllCategories(prefix);
+    }
+
+    @GetMapping("/products/{id}")
+    public ResponseEntity<Product> getProductById(@PathVariable String id) {
+        Optional<Product> product = productService.findProductById(id);
+        if (product.isPresent()) {
+            Product productFinal = product.get();
+            return ResponseEntity.ok(productFinal);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
     }
 }
 

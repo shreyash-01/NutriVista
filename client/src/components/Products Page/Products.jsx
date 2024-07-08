@@ -1,8 +1,7 @@
-import { useEffect, useState, useContext } from "react"
+import { useEffect, useState } from "react"
 import Nav from "../Nav/Nav"
 import axios from "axios";
 import { Link, useParams, useNavigate } from "react-router-dom";
-import { ProductContext } from "../../context/ProductContext";
 export default function Products(){
     const [error, setError] = useState('');
     const [data,setData]=useState([]);
@@ -10,9 +9,7 @@ export default function Products(){
 
     const navigate=useNavigate()
 
-    const {productData, setProductData}=useContext(ProductContext);
     const handleClick=(product)=>{
-        setProductData(product);
         navigate(`/products/${product.id}`)
     }
 

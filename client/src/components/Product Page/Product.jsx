@@ -1,18 +1,39 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useParams } from "react-router-dom";
 import Nav from "../Nav/Nav";
-import { ProductContext } from "../../context/ProductContext";
 
 export default function Product(){
     const { product } = useParams();
 
     const [responseData, setResponseData]=useState(null);
-
-    const {productData, setProductData}=useContext(ProductContext);
+    const [productData, setProductData]= useState('');
 
     const [parsedResponse,setParsedResponse]=useState("")
     useEffect(() => {
+
+        const getData=async()=>{
+            const stringurl='http://localhost:8081/api/v1/products/'+product;
+            axios.get(stringurl)
+            .then((response) => {               
+                const json=response.data;
+                if (response.status === 200) {
+                    console.log(json);
+                    setProductData(json);    
+                }
+                else{
+                    // Handle errors here
+                    console.error('Request failed');
+                    // setError(response.data.error)
+                    
+                }                
+            })
+                
+            .catch((error) => {
+                console.error(error.response.data.error);
+            });
+        }
+
         const fetchData = async () => {
             const stringurl='http://localhost:8081/api/v1/product?productID='+product;
             axios.get(stringurl)
@@ -38,6 +59,7 @@ export default function Product(){
     
           
         }
+        getData();
         fetchData();
         
         if(responseData){

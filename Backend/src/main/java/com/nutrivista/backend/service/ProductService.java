@@ -14,7 +14,7 @@ import org.springframework.web.client.RestTemplate;
 
 import java.util.Iterator;
 import java.util.List;
-
+import java.util.Optional;
 @Service
 public class ProductService {
 
@@ -28,6 +28,10 @@ public class ProductService {
         this.productRepository = productRepository;
         this.categoriesRepository = categoriesRepository;
         restTemplate = new RestTemplate();
+    }
+
+    public Optional<Product> findProductById(String id) {
+        return productRepository.findById(id);
     }
 
 
