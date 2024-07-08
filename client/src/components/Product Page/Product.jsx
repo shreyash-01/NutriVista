@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useParams } from "react-router-dom";
 import Nav from "../Nav/Nav";
+import Loading from "./Loading";
 
 export default function Product(){
     const { product } = useParams();
@@ -78,6 +79,12 @@ export default function Product(){
                     <img src={productData.imageUrls[0]} alt="Product Image" className="h-[35vw] mt-[4vw] ml-10"></img>
                     <div className="flex flex-col font-lato justify-start ml-[12vw]">
                         <div className="text-3xl font-bold mt-[1vw]">{productData.productName}</div>
+                        {!responseData && 
+                            <div>
+                            <Loading />
+                            </div>
+
+                        }
                         {responseData && 
                             <div className="">
 
