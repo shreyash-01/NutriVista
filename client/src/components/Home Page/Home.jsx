@@ -83,7 +83,7 @@ export default function Home(){
         <div className="flex flex-col h-screen overflow-x-hidden">
             <div className="flex-none"><Nav /></div>
             <div className="flex-1 flex flex-col  text-white">
-                <div className="flex justify-between h-auto bg-gradient-to-r from-red-900 via-red-800 to-red-600 ml-1 mr-1 pb-40">
+                <div className="flex justify-between h-[28vw] bg-gradient-to-r from-red-900 via-red-800 to-red-600 ml-1 mr-1">
                     
               
                     <div className="text-white basis-1/2 text-7xl ml-[1vw] font-bold font-ubuntu mt-20 mb-3 flex justify-center">
@@ -115,7 +115,7 @@ export default function Home(){
                     
                     
                     <motion.div variants={searchVariants} initial="hidden" animate="visible" className="flex flex-col mr-[10vw] mt-40  mb-10 items-center">
-                        <div className="relative bottom-10 font-sacramento text-5xl">Search for a food category</div>
+                        <div className="relative bottom-10 font-sacramento text-7xl">Search for a food category</div>
                         <div className="flex">
                             <input type="text" 
                             placeholder="Enter" 
@@ -130,10 +130,10 @@ export default function Home(){
                         
                         
                         {searchResponse && 
-                            <div className={`absolute top-80 mt-5 text-black w-[27rem] flex flex-col rounded-sm bg-white z-50`}>
+                            <div className={`relative overflow-y-auto max-h-[24vw] mt-3 border-x-[2px] border-gray-500 text-black w-[29vw] flex flex-col rounded-md bg-white z-50`}>
                                 {searchResponse.map((response,index)=>(
                                     <Link to={`/category/${response.category}`} key={index}>
-                                    <div className="flex justify-between border-b-2 border-gray-400 cursor-pointer hover:bg-slate-500 p-2">
+                                    <div className="flex justify-between border-b-2 h-[2.3vw] border-gray-400 font-lato text-xl cursor-pointer hover:bg-slate-400 p-2">
                                         {response.category}
                                     
                                     </div>
@@ -154,9 +154,9 @@ export default function Home(){
                             <div className="text-black text-4xl font-bold font-ubuntu mt-5 mb-3 flex justify-center">
                                 Nutritional Insights across diverse food categories
                             </div>
-                            <div className="flex flex-col text-black ml-[5.2vw] w-[50vw]">
-                            <div>From staples like bread and peanut butter to an extensive selection of packaged goods, our database covers 
-                            a wide range of products, ensuring there's something to suit every taste and dietary preference. </div>
+                            <div className="flex flex-col text-black font-ubuntu text-2xl mt-8 ml-[8.2vw] w-[50vw]">
+                            From staples like bread and peanut butter to an extensive selection of packaged goods, our database covers 
+                            a wide range of products, ensuring there's something to suit every taste and dietary preference.
                             With user-friendly search functionality, navigating through our comprehensive database is effortless, 
                             making it easy to find the nutritional information you need, whenever you need it. Whether you're tracking 
                             macros, managing dietary restrictions, or simply curious about the nutritional content of your favorite snacks,
